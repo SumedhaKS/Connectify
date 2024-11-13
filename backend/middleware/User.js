@@ -1,41 +1,34 @@
-// This is for user validation / authentication after signup.       (Actually this is login logic)
+// This is for user validation / authentication after login.       
 const bcrypt = require("bcrypt")
-const { User } = require('../db')
+const { User } = require('../db');
+const { jwtSecret, jwt } = require("../config");
 
-async function userMiddleware(req, res, next) {          //using req.body for small testing. need to be changed to headers. Later use jwt for this
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
-
-    // validate if user has provided all fields or not , then store in db
-    if (!username || !email || !password) {
-        return res.json({
-            message: "Fill all inputs"
-        })
+async function userMiddleware(req, res, next) {       // function / Middleware to verify jwt token. Tested for "verifyUser"   
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.sendStatus(401)
     }
-    else {
-        const response = await User.findOne({
-            name: username,
-            email
-        })
-        if (!response) {
-            res.status(404).json({
-                msg: "User not found"
+
+    const token = authHeader.split(' ')[1];
+    try {
+        const verifyUser = jwt.verify(token, jwtSecret)
+        if (verifyUser) {
+            console.log('came here')
+            return next()
+        }
+        return res.sendStatus(403)                 // sends Forbidden
+
+    } catch (error) {
+        console.error("jwt verification error")
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                message: "Token expired"
             })
         }
-        else {
-            const isMatch = await bcrypt.compare(password, response.password)
-            if (!isMatch) {
-                res.send("Wrong password")
-            }
-            else {
-                next()
-            }
-        }
+        return res.sendStatus(401)
     }
-
 }
+ // written even the logic for token expiry
 
-//logic of login. This is not required now. Need to be written again for proper endpoints
 
 module.exports = userMiddleware;
