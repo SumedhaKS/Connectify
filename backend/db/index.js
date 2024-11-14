@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-mongoose.connect("mongodb+srv://admin:admin%400204@cluster0.cmmy0.mongodb.net/test-roomify") // put url
+mongoose.connect("mongodb-url-here") // put url
 
 /*
  - User db for storinig user info like name,password, email, joined rooms/saved rooms, (when user creates a room add it's _id to the joined rooms itself). 
