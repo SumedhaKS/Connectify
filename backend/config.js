@@ -12,4 +12,5 @@ const UserZodSchema = zod.object({
 })
 
 
+
 module.exports = {UserZodSchema, jwtSecret, jwt};
