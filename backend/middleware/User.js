@@ -1,3 +1,22 @@
+
+// This is for user validation / authentication after login.       
+const { jwtSecret, jwt } = require("../config");
+
+async function userMiddleware(req, res, next) {       // function / Middleware to verify jwt token. Tested for "verifyUser"   
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.sendStatus(401)
+    }
+
+    const token = authHeader.split(' ')[1];
+    try {
+        const verifyUser = jwt.verify(token, jwtSecret)
+        if (verifyUser) {
+            console.log('crossed middleware ')
+            return next()
+        }
+        return res.sendStatus(403)                 // sends Forbidden
+=======
 // This is for user validation / authentication after signup.       (Actually this is login logic)
 const bcrypt = require("bcrypt")
 const { User } = require('../db')
@@ -6,6 +25,7 @@ async function userMiddleware(req, res, next) {          //using req.body for sm
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
+
 
     // validate if user has provided all fields or not , then store in db
     if (!username || !email || !password) {
