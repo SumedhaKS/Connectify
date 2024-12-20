@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../services/socket";
-   
+
 const RoomPage = () => {
     const [rooms, setRooms] = useState([]); // List of rooms the user has joined
     const [newRoomName, setNewRoomName] = useState(""); // New room name
     const [newRoomSize, setNewRoomSize] = useState(2); // New room size
+    const [joinRoom, setjoinRoom] = useState("")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -13,6 +14,7 @@ const RoomPage = () => {
             const token = localStorage.getItem("token");
             if (!token) {
                 alert("Please log in first!");
+                navigate('/login')
                 return;
             }
 
@@ -125,6 +127,12 @@ const RoomPage = () => {
                     onChange={(e) => setNewRoomSize(e.target.value)}
                 />
                 <button onClick={createRoom}>Create Room</button>
+            </div>
+
+            <div>
+                <h3>Join room</h3>
+                <input type="text" placeholder="Enter room ID" value={joinRoom} onChange={(e) => setjoinRoom(e.target.value)} />
+                <button onClick={enterRoom}>Join</button>
             </div>
         </div>
     );

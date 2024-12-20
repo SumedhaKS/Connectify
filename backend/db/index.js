@@ -1,6 +1,11 @@
 const mongoose = require("mongoose")
 
+
+mongoose.connect("") // put url
+ 
+=======
 mongoose.connect("mongodb-url-here") // put url
+
 
 /*
  - User db for storinig user info like name,password, email, joined rooms/saved rooms, (when user creates a room add it's _id to the joined rooms itself). 
@@ -32,7 +37,7 @@ const RoomSchema = new mongoose.Schema({
 const MessagesSchema = new mongoose.Schema({
     roomId : {type : mongoose.Schema.ObjectId, ref: 'RoomSchema' , required : true},
     senderId : {type : mongoose.Schema.ObjectId, ref:'UserSchema', required:true},
-    message : String,
+    messages :  String,
     timeStamp : {type : Date, default:Date.now }
 })
 // can add content type to specify File or message . and if file then can have a field as file url.

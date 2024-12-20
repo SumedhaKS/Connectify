@@ -67,7 +67,7 @@ io.on("connection", (socket) => {
         const newMessage = await Messages.create({
             roomID,
             senderID: userID,
-            message,
+            messages: message,
         });
 
 
