@@ -1,0 +1,103 @@
+/* RoomChat.css */
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Main chat container */
+.chat-container {
+    background: linear-gradient(135deg, #f5deb3, #d2b48c);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.chat-box {
+    background-color: #f5f5dc;
+    border-radius: 12px;
+    padding: 20px;
+    width: 400px;
+    color: #8b4513;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.room-title {
+    font-size: 2rem;
+    text-align: center;
+    color: #8b4513;
+}
+
+.room-id {
+    text-align: center;
+    color: #d2b48c;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.messages-list ul {
+    list-style-type: none;
+    padding: 10px;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border-bottom: 2px solid #d2b48c;
+}
+
+.message-item {
+    background-color: #ffe4c4;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message-timestamp {
+    font-size: 0.9rem;
+    color: #8b4513;
+}
+
+.message-text {
+    font-size: 1rem;
+    color: #8b4513;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.message-input {
+    width: 80%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    color: #8b4513;
+    background-color: #fff8dc;
+}
+
+.send-button {
+    width: 15%;
+    background-color: #d2b48c;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.send-button:hover {
+    background-color: #f5deb3;
+}

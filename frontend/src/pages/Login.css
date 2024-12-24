@@ -1,0 +1,71 @@
+/* Background and Centering */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5dc; /* Beige background */
+    background-image: url('login.jpg'); /* Background image */
+}
+
+/* Login Card Styling */
+.login-card {
+    width: 400px;
+    background-color: #faf0e6; /* Light beige */
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+/* Title */
+.login-title {
+    font-size: 28px;
+    font-family: "Times New Roman", serif;
+    color: #8b7355; /* Coffee-brown color */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form Inputs */
+.login-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #deb887; /* Tan border */
+    border-radius: 8px;
+    background-color: #fff8dc; /* Light cream */
+    font-family: "Times New Roman", serif;
+    color: #8b7355;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.login-input::placeholder {
+    color: #d2b48c; /* Lighter tan for placeholders */
+}
+
+.login-input:focus {
+    border-color: #8b7355; /* Coffee-brown focus */
+}
+
+/* Login Button */
+.login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #deb887; /* Tan background */
+    color: white;
+    font-family: "Times New Roman", serif;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #8b7355; /* Coffee-brown hover */
+}
+
+.login-button:focus {
+    outline: 2px solid #8b7355;
+    outline-offset: 2px;
+}

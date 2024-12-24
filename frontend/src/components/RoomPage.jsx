@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../services/socket";
+import './RoomPage.css'; // Import the custom CSS
 
 const RoomPage = () => {
-    const [rooms, setRooms] = useState([]); // List of rooms the user has joined
-    const [newRoomName, setNewRoomName] = useState(""); // New room name
-    const [newRoomSize, setNewRoomSize] = useState(2); // New room size
-    const [joinRoom, setjoinRoom] = useState("")
+    const [rooms, setRooms] = useState([]);
+    const [newRoomName, setNewRoomName] = useState("");
+    const [newRoomSize, setNewRoomSize] = useState(2);
+    const [joinRoom, setjoinRoom] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,7 +15,7 @@ const RoomPage = () => {
             const token = localStorage.getItem("token");
             if (!token) {
                 alert("Please log in first!");
-                navigate('/login')
+                navigate('/login');
                 return;
             }
 
@@ -33,7 +34,7 @@ const RoomPage = () => {
                 }
 
                 const data = await response.json();
-                setRooms(data.rooms); // Assuming backend sends rooms array in `rooms`
+                setRooms(data.rooms);
             } catch (error) {
                 console.error("Error fetching rooms:", error);
                 alert("Failed to fetch rooms, please try again.");
@@ -43,12 +44,10 @@ const RoomPage = () => {
         fetchRooms();
     }, []);
 
-    // Navigate to room chat page
     const enterRoom = (roomId) => {
         navigate(`/room/${roomId}`);
     };
 
-    // Function to create a new room
     const createRoom = async () => {
         if (!newRoomName) {
             alert("Please enter a room name!");
@@ -77,12 +76,10 @@ const RoomPage = () => {
             }
 
             const responseText = await response.text();
-            console.log("Successfully created room:", responseText);
-
-            const newRoomId = responseText.split(" ")[4]; // Extract room ID from response
+            const newRoomId = responseText.split(" ")[4];
             setRooms((prevRooms) => [...prevRooms, { name: newRoomName, _id: newRoomId }]);
-            setNewRoomName(""); // Clear input
-            setNewRoomSize(2); // Reset size input
+            setNewRoomName("");
+            setNewRoomSize(2);
         } catch (error) {
             console.error("Error creating room:", error);
             alert("Failed to create room, please try again.");
@@ -90,20 +87,20 @@ const RoomPage = () => {
     };
 
     return (
-        <div>
-            <h2>Welcome to Connectify!</h2>
+        <div className="room-container">
+            <h2 className="app-title">Welcome to Connectify!</h2>
 
             {/* Display list of rooms */}
-            <div>
+            <div className="rooms-list">
                 <h3>Your Rooms</h3>
                 {rooms.length === 0 ? (
                     <p>You have not joined any rooms yet.</p>
                 ) : (
                     <ul>
                         {rooms.map((room) => (
-                            <li key={room._id}>
-                                <strong>{room.name}</strong>{" "}
-                                <button onClick={() => enterRoom(room._id)}>Join</button>
+                            <li key={room._id} className="room-item">
+                                <strong>{room.name}</strong>
+                                <button onClick={() => enterRoom(room._id)} className="join-button">Join</button>
                             </li>
                         ))}
                     </ul>
@@ -111,13 +108,14 @@ const RoomPage = () => {
             </div>
 
             {/* Create Room */}
-            <div>
+            <div className="create-room">
                 <h3>Create a New Room</h3>
                 <input
                     type="text"
                     placeholder="Enter Room Name"
                     value={newRoomName}
                     onChange={(e) => setNewRoomName(e.target.value)}
+                    className="input-field"
                 />
                 <input
                     type="number"
@@ -125,14 +123,22 @@ const RoomPage = () => {
                     placeholder="Enter Room Size"
                     value={newRoomSize}
                     onChange={(e) => setNewRoomSize(e.target.value)}
+                    className="input-field"
                 />
-                <button onClick={createRoom}>Create Room</button>
+                <button onClick={createRoom} className="create-button">Create Room</button>
             </div>
 
-            <div>
-                <h3>Join room</h3>
-                <input type="text" placeholder="Enter room ID" value={joinRoom} onChange={(e) => setjoinRoom(e.target.value)} />
-                <button onClick={enterRoom}>Join</button>
+            {/* Join Room */}
+            <div className="join-room">
+                <h3>Join Room</h3>
+                <input
+                    type="text"
+                    placeholder="Enter Room ID"
+                    value={joinRoom}
+                    onChange={(e) => setjoinRoom(e.target.value)}
+                    className="input-field"
+                />
+                <button onClick={() => enterRoom(joinRoom)} className="join-button">Join</button>
             </div>
         </div>
     );

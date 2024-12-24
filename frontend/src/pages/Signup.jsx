@@ -1,63 +1,118 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './SignUp.css';
 
-const Signup = ()=> {
-    const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [password1, setPassword1] = useState('')
-    const  navigate = useNavigate()
+const SignUp = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
 
-    const handleSignUp = async (e)=>{
-        e.preventDefault()
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
-        if(password !== password1){
-            alert("Passwords are not matching. Please try again")
-            return
-        }
-
-        try{
-            console.log(username, email, password)
-            const dataBody = {
-                username,
-                email,
-                password,
-            }
-            const response = await fetch("http://localhost:3001/signup", {
-                method : "POST",
-                headers : {
-                    "Content-type" : "application/json", 
-                },
-                body : JSON.stringify(dataBody),
-            })
-            if(response.ok){
-                alert("SignUp done")
-                navigate("/login")
-            }
-            else{
-                alert("Wrong inputs. Try again" )
-            }
-        }
-        catch(error){
-            console.error("An error occurred")
-            alert("Error occurred. Please try again later.")
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
     }
 
-    return (
-        <div>
-            <h2>Signup</h2>
-            <form onSubmit={handleSignUp}>
-                <div>
-                    <input type="text" placeholder="Username" value={username} onChange={(e)=> setUsername(e.target.value)} />
-                    <input type="email" placeholder="Email" value={email} onChange={(e)=> setEmail(e.target.value)} />
-                    <input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} />
-                    <input type="password" placeholder="Re-enter Password" value={password1} onChange={(e)=>setPassword1(e.target.value)} />
-                    <button type="submit">SignUp</button>
-                </div>
-            </form>
-        </div>
-    )
-}
+    const userData = { username: formData.username, email: formData.email, password: formData.password };
+    try {
+      const response = await fetch("http://localhost:3001/signup", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        console.log("Signup successful:", data);
+        navigate("/login"); // Redirect to login page after successful signup
+      } else {
+        console.error("Signup failed:", data.message);
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Error signing up:", error);
+      alert("An error occurred. Please try again later.");
+    }
+  };
 
-export default Signup;
+  return (
+    <div className="aesthetic-container">
+      <div className="signup-box">
+        <h1 className="signup-title">Create Account</h1>
+        <form onSubmit={handleSubmit} className="signup-form">
+          <div className="form-group">
+            <label>Username</label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          
+          <button type="submit">
+            Sign Up
+          </button>
+        </form>
+        
+        <p className="login-link">
+          Already have an account?{' '}
+          <span onClick={() => navigate('/login')}>
+            Login
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default SignUp;

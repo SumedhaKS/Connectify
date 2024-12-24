@@ -1,0 +1,95 @@
+/* Background and Centering */
+.aesthetic-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5dc; /* Beige background */
+  background-image: url('login.jpg'); /* Background image */
+}
+
+/* Signup Box Styling */
+.signup-box {
+  width: 400px;
+  background-color: #faf0e6; /* Light beige */
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+/* Title */
+.signup-title {
+  font-size: 28px;
+  font-family: "Times New Roman", serif;
+  color: #8b7355; /* Coffee-brown color */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form Styling */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-family: "Times New Roman", serif;
+  color: #8b7355; /* Coffee-brown */
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #deb887; /* Tan border */
+  border-radius: 8px;
+  background-color: #fff8dc; /* Light cream */
+  font-family: "Times New Roman", serif;
+  color: #8b7355;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #8b7355; /* Coffee-brown focus */
+}
+
+/* Signup Button */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #deb887; /* Tan background */
+  color: white;
+  font-family: "Times New Roman", serif;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #8b7355; /* Coffee-brown hover */
+}
+
+button:focus {
+  outline: 2px solid #8b7355;
+  outline-offset: 2px;
+}
+
+/* Login Link */
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+  font-family: "Times New Roman", serif;
+}
+
+.login-link span {
+  color: #8b7355;
+  cursor: pointer;
+  text-decoration: underline;
+}
