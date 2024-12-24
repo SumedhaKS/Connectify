@@ -32,11 +32,11 @@ const RoomSchema = new mongoose.Schema({
 const MessagesSchema = new mongoose.Schema({
     roomId : {type : mongoose.Schema.ObjectId, ref: 'RoomSchema' , required : true},
     senderId : {type : mongoose.Schema.ObjectId, ref:'UserSchema', required:true},
-    messages :  String,
-    timeStamp : {type : Date, default:Date.now }
+    messages :  String ,
+    timeStamp : {type : Date, default:Date.now() }
 })
 // can add content type to specify File or message . and if file then can have a field as file url.
-
+ 
 const User = mongoose.model('User', UserSchema)
 const Room = mongoose.model('Room', RoomSchema)
 const Messages = mongoose.model('Messages', MessagesSchema)

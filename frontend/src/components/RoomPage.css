@@ -1,0 +1,106 @@
+/* RoomPage.css */
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+
+}
+
+/* Main container */
+.room-container {
+    background: linear-gradient(135deg, #f5deb3, #d2b48c);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+/* App title */
+.app-title {
+    font-size: 2.5rem;
+    color: #8b4513;
+    margin-bottom: 20px;
+}
+
+/* Rooms list */
+.rooms-list {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+    background-color: #f5f5dc;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.room-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffe4c4;
+    border-radius: 8px;
+    color: #8b4513;
+}
+
+.join-button {
+    background-color: #d2b48c;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.join-button:hover {
+    background-color: #f5deb3;
+}
+
+/* Create Room */
+.create-room, .join-room {
+    width: 100%;
+    max-width: 600px;
+    background-color: #f5f5dc;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+.create-room h3, .join-room h3 {
+    color: #8b4513;
+    margin-bottom: 15px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    color: #8b4513;
+    background-color: #fff8dc;
+}
+
+.create-button {
+    background-color: #d2b48c;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.create-button:hover {
+    background-color: #f5deb3;
+}
+

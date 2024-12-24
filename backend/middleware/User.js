@@ -4,6 +4,7 @@ const { jwtSecret, jwt } = require("../config");
 async function userMiddleware(req, res, next) {       // function / Middleware to verify jwt token. Tested for "verifyUser"   
     const authHeader = req.headers.authorization;
     if (!authHeader) {
+        console.log("from middleware")
         return res.sendStatus(401)
     }
 
