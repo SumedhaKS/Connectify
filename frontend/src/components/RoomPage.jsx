@@ -99,8 +99,13 @@ const RoomPage = () => {
                     <ul>
                         {rooms.map((room) => (
                             <li key={room._id} className="room-item">
+
+                                <div><strong>{room.name}</strong></div>
+                               <div> <button onClick={() => enterRoom(room._id)} className="join-button">Join</button> </div>
+=======
                                 <strong>{room.name}</strong>
                                 <button onClick={() => enterRoom(room._id)} className="join-button">Join</button>
+
                             </li>
                         ))}
                     </ul>

@@ -29,56 +29,63 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
 
+const onlineUsers = {}
 // Socket.io events
 io.on("connection", (socket) => {
     console.log("User connected: ", socket.id)
 
     //  join specific room
-    socket.on("join-room", async (userId, roomId) => {
-        const findUser = await User.findOne({ name: userId })
+    socket.on("join-room", async (token, roomId) => { 
+        const user = jwt.decode(token)
+        const findUser = await User.findOne({ name: user.username })
         if(!findUser){
             return socket.emit("error", { message: "User not found" });
         }
-        userId = findUser._id;                                                   //finding the ID of the user
-
+        const userId = findUser._id;                                                   //finding the ID of the user
+ 
         console.log(`User ${userId} is joining room ${roomId}`)
 
         const room = await Room.findById(roomId);
+        console.log(roomId)
 
         if (!room) {
             return socket.emit("error", { message: "Room not found" });
         }
 
         // if user not in members array the adding them here
-        if (!room.members.includes(userId)) {
-            room.members.push(userId);
-            await Room.save()                               // it's either room or Room
+        if (!room.members.includes(userId._id.toString())) {
+            room.members.push(userId._id.toString());
+            await room.save()                               // it's either room or Room
         }
-
+ 
         socket.join(roomId);                            // adding user to socket.io room
         io.to(roomId).emit("user-joined", { userId, roomId });
     })
 
       // Send message to room
-    socket.on("send-message", async (userID, roomID, message) => {
-        console.log(`Message from User:${userID} in room: ${roomID} : ${message}`);
-
+    socket.on("send-message", async (message) => {
+        const decodedUser = jwt.decode(message.Token)
+        const userID = await User.findOne({name : decodedUser.username})
+        // const roomID = await Room.findOne({})
+        console.log(`Message from User:${userID} in room: ${message.roomId} : ${message.newMessage}`);
+        console.log(userID._id.toString())  
         // Save the message in the database
         const newMessage = await Messages.create({
-            roomID,
-            senderID: userID,
-            messages: message,
+            roomId : message.roomId,
+            senderId: userID._id.toString(),
+            messages: message.newMessage,
+            timeStamp : Date.now()
         });
-
-
+        
+        console.log(newMessage.roomId.toString())
         // Broadcast the message to other users in the room
-        io.to(roomID).emit("receive-message", {
-            senderID: userID,
-            content: message,
+        io.to(newMessage.roomId.toString()).emit("receive-message", {
+            senderId: userID._id.toString(),
+            content: newMessage.messages,
             createdAt: newMessage.createdAt,
         });
     });
-
+ 
    
     //  handling if user disconnects
     socket.on("disconnect", () => {
@@ -149,10 +156,25 @@ app.post('/signup', async (req, res) => {  //for now let us just ask user for hi
 
 app.post('/login', async (req, res) => {
     const username = req.body.username;
-    const email = req.body.email;
     const password = req.body.password;
 
     // validate if user has provided all fields or not.
+
+    try {
+        if (!username || !password) {                                                 // !email ||
+            return res.json({
+                message: "Fill all inputs"
+            })
+        }
+        else {
+            const response = await User.findOne({       //find the user
+                name:username
+            })
+            if (!response) {
+                return res.status(404).json({
+                    msg: "User not found"
+                })
+=======
     if (!username || !email || !password) {
         return res.json({
             message: "Fill all inputs"
@@ -172,6 +194,7 @@ app.post('/login', async (req, res) => {
             const isMatch = await bcrypt.compare(password, response.password)
             if (!isMatch) {
                 res.status(400).send("Wrong password")
+
             }
 
             else {                                  //validate password
@@ -213,6 +236,9 @@ app.get('/joined-rooms', async (req, res) => {                              // t
     try {
 
         const userData = await User.findOne({ name: decodedUserId.username })
+        console.log(userData.id)
+
+
         const response = await Room.find({ members: userData._id })
         res.json({
             userId : userData._id,
@@ -251,6 +277,8 @@ app.post('/create-room', userMiddleware, async (req, res) => {
             members: [creatorId],
             size: parseInt(roomSize),
         })
+        const updatedJoinedRoom = [...creatorBody.joinedRoomsId, newRoom._id ]
+        const addUserRoom = await User.updateOne({joinedRoomsId:updatedJoinedRoom})
         return res.status(201).send(`Room created. RoomID is ${newRoom._id}`)
 
     } catch (error) {
@@ -259,13 +287,14 @@ app.post('/create-room', userMiddleware, async (req, res) => {
     }
 
 })
-
+ 
 app.post('/join-room', userMiddleware, async (req, res) => {
     const roomId = req.body.joining_id;
+    console.log('from backend ', roomId)
     const username = req.headers.authorization.split(' ')[1];
     const decodedUserName = jwt.decode(username);
     const response = await Room.findOne({ _id: roomId });
-
+ 
     if (!response) {
         return res.status(401).json({
             message: "Room not found"
@@ -292,7 +321,7 @@ app.post('/join-room', userMiddleware, async (req, res) => {
     }
 
 })
-
+  
 
 // ######################################################
 server.listen(port, (req, res) => {
