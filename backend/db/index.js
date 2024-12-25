@@ -2,9 +2,6 @@ const mongoose = require("mongoose")
 
 
 mongoose.connect("") // put url
- 
-=======
-mongoose.connect("mongodb-url-here") // put url
 
 
 /*
