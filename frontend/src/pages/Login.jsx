@@ -9,7 +9,11 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+
         const userData = { username, password }; 
+=======
+        const userData = { username, email, password };
+
         try {
             const response = await fetch("http://localhost:3001/login", {
                 method: "POST",

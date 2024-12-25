@@ -5,7 +5,11 @@
     align-items: center;
     justify-content: center;
     background-color: #f5f5dc; /* Beige background */
+
     background-image: url('../login.jpg'); /* Background image */
+=======
+    background-image: url('login.jpg'); /* Background image */
+
 }
 
 /* Login Card Styling */

@@ -4,6 +4,7 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt")
+
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const app = express()
@@ -93,12 +94,21 @@ io.on("connection", (socket) => {
 })
 
 // ##########################################################
+=======
+const app = express()
+const port = 3000
+const { UserZodSchema } = require("./config")
+const { User } = require("./db/index")
+
+app.use(express.json())
+app.use(bodyParser.json())
+
+
 app.get('/', (req, res) => {      //dummmy end point
     res.json({
         msg: "Hi hello hru"
     })
 })
-// ##########################################################
 
 app.post('/signup', async (req, res) => {  //for now let us just ask user for his username, email and password 
     const { username, email, password } = req.body;
@@ -144,13 +154,12 @@ app.post('/signup', async (req, res) => {  //for now let us just ask user for hi
     }
 })                                      // "/signup" is tested. Bug is commented above.(email validation) 
 
-// #####################################################
-
 app.post('/login', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
     // validate if user has provided all fields or not.
+
     try {
         if (!username || !password) {                                                 // !email ||
             return res.json({
@@ -165,7 +174,29 @@ app.post('/login', async (req, res) => {
                 return res.status(404).json({
                     msg: "User not found"
                 })
+=======
+    if (!username || !email || !password) {
+        return res.json({
+            message: "Fill all inputs"
+        })
+    }
+    else {
+        const response = await User.findOne({       //find the user
+            name: username,
+            email
+        })
+        if (!response) {
+            res.status(404).json({
+                msg: "User not found"
+            })
+        }
+        else {                                  //validate password
+            const isMatch = await bcrypt.compare(password, response.password)
+            if (!isMatch) {
+                res.status(400).send("Wrong password")
+
             }
+
             else {                                  //validate password
                 const isMatch = await bcrypt.compare(password, response.password)
                 if (!isMatch) {
@@ -185,8 +216,17 @@ app.post('/login', async (req, res) => {
         return res.status(500).json({
             message: "Error occurred during login. Please try again later."
         })
+=======
+            else {
+                res.status(200).json({
+                    message: "Login successfull"
+                })
+            }
+        }
+
     }
-})                                           // 'login' done. tested once. not tested token expiry.
+})                                           // "/login" tested ok. JWT is not used. This is just a basic version.
+
 
 // ######################################################
 
@@ -285,6 +325,11 @@ app.post('/join-room', userMiddleware, async (req, res) => {
 
 // ######################################################
 server.listen(port, (req, res) => {
+=======
+
+
+app.listen(port, (req, res) => {
+
     console.log(`Listening on port ${port}`)
 })
 

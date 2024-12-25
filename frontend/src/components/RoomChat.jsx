@@ -47,9 +47,14 @@ const RoomChat = () => {
                     <ul>
                         {messages.map((msg, index) => (
                             <li key={index} className="message-item">
+
                                 <strong>{msg.senderId === "You" ? "You" : msg.senderId}:</strong> {msg.content}{" "}
                                 <span className="message-timestamp">
                                     {new Date(msg.createdAt).toLocaleString()}:
+=======
+                                <span className="message-timestamp">
+                                    {new Date(msg.timestamp).toLocaleString()}:
+
                                 </span>
                                 <span className="message-text">{msg.text}</span>
                             </li>

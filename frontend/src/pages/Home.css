@@ -24,7 +24,11 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+
   background-image: url('../home.jpg'); /* Add your background image path here */
+=======
+  background-image: url('home.jpg'); /* Add your background image path here */
+
   background-size: cover; /* Cover the entire container */
   background-position: center; /* Center the background image */
   
